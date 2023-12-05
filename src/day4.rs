@@ -8,6 +8,9 @@ fn part1(input: &str) -> i32 {
         let line = line.replace("  ", " ");
         let colon = line.find(":").unwrap();
         // let id: i32 = line[5..colon].parse().unwrap();
+
+        // BETTER: trim, split once (and dereferencing), collect vec, map
+
         let mut x = line[colon + 2..].split(" | ");
         let y = x.next().unwrap();
         let z = x.next().unwrap();
