@@ -137,6 +137,7 @@ fn compare_fn(a: (&str, &str), b: (&str, &str)) -> std::cmp::Ordering {
 
 #[aoc(day7, part1)]
 fn part1(input: &str) -> i32 {
+    // better: lines, map (into hand type), sorted, enumerate, map, sum
     let mut si = input
         .split("\n")
         .map(|x| x.split_once(" ").unwrap())
