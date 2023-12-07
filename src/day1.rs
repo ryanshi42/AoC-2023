@@ -1,23 +1,37 @@
 use std::collections::HashMap;
 
 #[aoc(day1, part1)]
-fn part1(_input: &str) -> i32 {
+fn part1(input: &str) -> i32 {
     // println!("Hello World!");
-    // let v = bytes.chars().clone().filter(|c| "0123456789".contains(*c) ).collect::<Vec<char>>(); 
-    // let n = v.len();
-    // if n == 0 {
-    //     panic!("help");
-    // } else if n == 1 {
-    //     x += 11 * v[0].to_digit(10).unwrap();
-    // } else {
-    //     x += 10 * v[0].to_digit(10).unwrap() + v[n-1].to_digit(10).unwrap();
+    let mut x = 0;
+    for bytes in input.split("\n") {
+        let v = bytes.chars().clone().filter(|c| "0123456789".contains(*c) ).collect::<Vec<char>>(); 
+        let n = v.len();
+        if n == 0 {
+            panic!("help");
+        } else if n == 1 {
+            x += 11 * v[0].to_digit(10).unwrap();
+        } else {
+            x += 10 * v[0].to_digit(10).unwrap() + v[n-1].to_digit(10).unwrap();
 
-    // }
-    return 0;
+        }
+    }
+    return x.try_into().unwrap();
 }
 
 #[aoc(day1, part2)]
 fn part2(input: &str) -> i32 {
+    // return part1(&input
+    //     .replace("one", "1")
+    //     .replace("two", "2")
+    //     .replace("three", "3")
+    //     .replace("four", "4")
+    //     .replace("five", "5")
+    //     .replace("six", "6")
+    //     .replace("seven", "7")
+    //     .replace("eight", "8")
+    //     .replace("nine", "9")
+    // );
     let mut x = 0;
     for bytes in input.split('\n') {
         // println!("{}", line?);
