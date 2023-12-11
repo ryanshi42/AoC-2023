@@ -1,4 +1,4 @@
-use std::collections::{HashMap, HashSet};
+use std::collections::{HashSet};
 
 #[aoc(day4, part1)]
 fn part1(input: &str) -> i32 {
@@ -68,5 +68,6 @@ fn part2(input: &str) -> i32 {
             }
         }
     }
+    println!("{ans}");
     return v.iter().sum::<usize>() as i32;
 }

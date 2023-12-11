@@ -1,4 +1,4 @@
-use std::{collections::HashMap, cmp::min};
+use std::{collections::HashMap};
 
 #[aoc(day3, part1)]
 fn part1(input: &str) -> u32 {
@@ -152,7 +152,7 @@ fn part2(input: &str) -> i32 {
     }
     let mut z = 0;
 
-    for (ch, v) in ans {
+    for (_ch, v) in ans {
         if v.len() == 2 {
             z += v[0] * v[1];
         }

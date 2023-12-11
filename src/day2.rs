@@ -45,7 +45,7 @@ fn part2(input: &str) -> i32 {
     let mut ans = 0;
     for line in input.split("\n") {
         let colon = line.find(":").unwrap();
-        let id: i32 = line[5..colon].parse().unwrap();
+        let _id: i32 = line[5..colon].parse().unwrap();
 
         let mut chm : HashMap<&str, i32> = HashMap::new();
         for game in line[colon + 2..].split("; ") {

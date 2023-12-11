@@ -1,4 +1,4 @@
-use std::{collections::HashMap, hash::Hash};
+use std::{collections::HashMap};
 
 #[aoc(day5, part1)]
 fn part1(input: &str) -> i32 {
