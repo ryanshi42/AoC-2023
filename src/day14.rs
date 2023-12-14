@@ -20,18 +20,14 @@ fn part1(input: &str) -> u64 {
     let x = transpose(convert(input));
     let mut ans = 0;
 
-    let mut orocks = vec![];
-    let mut hrocks = vec![];
     for (i, line) in x.iter().enumerate() {
         let mut k = x.len();
         for (j, elem) in line.iter().enumerate() {
             if *elem == 'O' {
                 ans += k;
                 k -= 1;
-                orocks.push((i, j));
             } else if *elem == '#' {
                 k = x.len() - j - 1;
-                hrocks.push((i, j));
             }
         }
     }
@@ -85,18 +81,16 @@ fn part2(input: &str) -> u64 {
         let z2 = g(transpose(z1), true);
         let z3 = g(transpose(z2), false);
         let z4 = g(transpose(z3), false);
-        if x == z4 {
-            break;
-        }
+
         x = z4;
         if hs.get(&x).is_some() {
             let start = hs.get(&x).unwrap();
             let cycle = i - start;
             let l = ((1000000000 - start) % cycle) + start;
-            for (lmao, v) in &hs {
+            for (key, v) in &hs {
                 // println!("{l} {cycle} {}", *v);
                 if *v == l {
-                    for (i, line) in lmao.iter().enumerate() {
+                    for (i, line) in key.iter().enumerate() {
                         for (_j, elem) in line.iter().enumerate() {
                             if *elem == 'O' {
                                 ans += x.len() - i;
