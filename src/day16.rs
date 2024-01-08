@@ -82,6 +82,7 @@ fn f(start: Beam, map: &Vec<Vec<Tile>>) -> usize {
         }
         energized.insert(beam.pos);
         seen.insert(beam);
+        // Vector, chain in Rust.
         let dirs = match (map[beam.pos.y][beam.pos.x], beam.dir) {
             (Tile::Empty, _)
             | (Tile::SplitHoriz, Direction::Left)
