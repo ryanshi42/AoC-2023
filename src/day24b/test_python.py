@@ -1,5 +1,9 @@
 from sympy import symbols, solve
 
+# This is code taken off GitHub, and not my work. This is the solution that worked for my input, it seems that the Rust solutions
+# suffer from some floating point errors.
+# https://topaz.github.io/paste/#XQAAAQAiBQAAAAAAAAAzHIoib6qwDfWv9YL2iyT0oyFsOL00fu/fAxr38eU00u5xJInC2pv+zhMOr9Z5v6wEmlkCXBg3Zb6IoH049og896ZmILSEl1lcCq+8MDtxD54QTySnUwlez43Bbr20uK5MQY84xhPNa4H9URi9lCXOkVN3gFfR/Ayla8eEbWDhnaXWml5FhgkfOhiXYX9kgWZYt5oCTiy6HUt3BqEJGPIaLScKn+W/zBXgds3PZPHvt5/bbv/R6u3ftckigtXkk+8Bgbup58LO9Y/mw+uPOuyXHRfeQAaWichFd8uHG92/EwfZtCXrWHQPf42PEETun0oXDiS+WJqnN5nn13g6V+CLXtNK6ig8xFrmLnv8zJ+ozGbqWqVWYjzNqJbTQ2CtWdve0HRw9KN30G1ZEb7quF/Fka6xo1RkGP4YkV+/A4H9JIrU3ySzbE9NfajYtwVSqI2vOWmKIiZBVGekRrNAwsCg0hc2a3SPSk0G8knA0xhsYdeJTwkVRbiEkitMv167KCYN57ilATH2pxWU6hbn1Tz/NDq2L2Xw9osVppBeW+45h4FPgf/PSDONOxMAeEQVZbGveTEFNmu3vvgAeuuKy22ZcQLNq8zj0FCCYqTyB9bdKSlcJQcyYbsxHyiqU2EAldhIYpFqyu/pJ9jB4mZOpzmmUimPBFEk7mMcCOhK9TnclMytBPAO4def1tFhlqfov1clPa4FsPaJqXI+VhxSsLX01eC1WbZ9sDfbh1rgl8jGelAj/9xBoUA=
+
 hails = []
 for line in open("../aoc_2023/input/2023/day24.txt").readlines()[:3]:
     line = line.strip().split(" @ ")
