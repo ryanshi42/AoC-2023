@@ -80,7 +80,7 @@ impl<'a> Instr<'a> {
 
     fn new2(line: &'a str) -> Self {
         let Some((instr, hex)) = line.split_once(" (") else { panic!("hi") };
-        let Some((dir, new_num)) = instr.split_once(" ") else {panic!("hi") };
+        let Some((_dir, _new_num)) = instr.split_once(" ") else {panic!("hi") };
         let new_hex = &hex[1..hex.len()];
         let dir = new_hex.chars().nth(5).unwrap(); 
         let new_num = new_hex.chars().enumerate().take(5).fold(0, |acc, (i, x)| acc + (16_usize.pow((4 - i).try_into().unwrap())) * to_num(x) as usize);
@@ -110,7 +110,7 @@ fn parse2(input: &str) -> Vec<Instr> {
 fn calc_area<'a>(vv: impl Iterator<Item = Instr<'a>>) -> i64 {
     let (area, perim, _) = vv.fold(
         (0, 0, Coord { x: 0, y: 0 }),
-        |(ca, cper, cpos), Instr { dir, num, hex }| {
+        |(ca, cper, cpos), Instr { dir, num, hex: _ }| {
             let new_pos = cpos.advance(&dir, num);
             let new_area = ca + (cpos.x * new_pos.y - cpos.y * new_pos.x);
             let new_perim = cper + num; 

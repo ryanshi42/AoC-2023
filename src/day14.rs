@@ -20,7 +20,7 @@ fn part1(input: &str) -> u64 {
     let x = transpose(convert(input));
     let mut ans = 0;
 
-    for (i, line) in x.iter().enumerate() {
+    for (_i, line) in x.iter().enumerate() {
         let mut k = x.len();
         for (j, elem) in line.iter().enumerate() {
             if *elem == 'O' {
