@@ -156,6 +156,8 @@ fn parse2(s: &str) -> Vec<Vec<Tile>> {
         .collect()
 }
 
+// I gave up again and read a solution.
+// https://nickymeuleman.netlify.app/garden/aoc2023-day23
 #[aoc(day23, part2)]
 fn part2(input: &str) -> usize {
     let map = parse2(input);

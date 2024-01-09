@@ -85,7 +85,8 @@ fn part1(input: &str) -> usize {
     bfs(map, start, 64)
 }
 
-// Brute force approach. This was very trek so I just copied again from the source above. Thanks! xx
+// This does NOT work as it's too slow. I gave up and read someone else's solution instead.
+// https://nickymeuleman.netlify.app/garden/aoc2023-day21
 #[aoc(day21, part2)]
 fn part2(input: &str) -> usize {
     // should chain
