@@ -1,4 +1,4 @@
-use std::{cmp::max, collections::HashSet, sync::atomic::AtomicU64, panic::AssertUnwindSafe};
+use std::{collections::HashSet};
 
 #[derive(Hash, PartialEq, Eq, Clone, Copy)]
 enum Tile {
@@ -11,7 +11,7 @@ enum Tile {
 }
 
 impl Tile {
-    fn forward(&self) -> Self {
+    fn _forward(&self) -> Self {
         match self {
             Tile::Empty => Tile::Up,
             Tile::Up => Tile::Down,
