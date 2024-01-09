@@ -1,3 +1,4 @@
+use std::{cmp::max, collections::HashSet, sync::atomic::AtomicU64, panic::AssertUnwindSafe};
 
 #[derive(Hash, PartialEq, Eq, Clone, Copy)]
 enum Tile {
@@ -9,10 +10,23 @@ enum Tile {
     Wall,
 }
 
+impl Tile {
+    fn forward(&self) -> Self {
+        match self {
+            Tile::Empty => Tile::Up,
+            Tile::Up => Tile::Down,
+            Tile::Down => Tile::Left,
+            Tile::Left => Tile::Right,
+            Tile::Right => Tile::Empty,
+            Tile::Wall => Tile::Wall,
+        }
+    }
+}
+
 #[derive(Hash, PartialEq, Eq, Clone, Copy)]
 struct Coord {
-    x: i64,
-    y: i64,
+    x: usize,
+    y: usize,
 }
 
 fn parse(s: &str) -> Vec<Vec<Tile>> {
@@ -33,54 +47,123 @@ fn parse(s: &str) -> Vec<Vec<Tile>> {
         .collect()
 }
 
-fn dfs(map: Vec<Vec<Tile>>, start: Coord, max: usize) -> usize {
-    let mut stack = vec![]; 
-    stack.push((start, 0));
+impl Coord {
+    fn neighbours(&self, map: &Vec<Vec<Tile>>, seen: &HashSet<Coord>) -> Vec<Coord> {
+        let rows = map.len();
+        let cols = map[0].len();
+        let mut res = Vec::new();
 
-    let width = map[0].len();
-    let height = map.len();
-
-    let SHADOW_ROW = [Tile::Empty; width];
-    let mut shadow_grid = [SHADOW_ROW; height];
-
-    let mut ans = 0;
-
-    while !stack.is_empty() {
-        let curr = stack.pop().unwrap();
-        ans = max(ans, stack.len());
-        match map[curr.j][curr.i] {
-
+        match map[self.y][self.x] {
+            Tile::Empty => (),
+            Tile::Up => {
+                if self.y > 0 && !seen.contains(&Coord { x: self.x, y: self.y - 1 }) {
+                    res.push(Coord { x: self.x, y: self.y - 1 });
+                }
+                return res;
+            },
+            Tile::Down => {
+                if self.y < rows - 1 && !seen.contains(&Coord { x: self.x, y: self.y + 1 }) {
+                    res.push(Coord { x: self.x, y: self.y + 1 });
+                }
+                return res; 
+            },
+            Tile::Left => { 
+                if self.x > 0 && !seen.contains(&Coord { x: self.x - 1, y: self.y }) {
+                    res.push(Coord { x: self.x - 1, y: self.y });
+                }
+                return res;
+            },
+            Tile::Right => {
+                if self.x < cols - 1 && !seen.contains(&Coord { x: self.x + 1, y: self.y }) {
+                    res.push(Coord { x: self.x + 1, y: self.y });
+                }
+                return res; 
+            },
+            Tile::Wall => panic!("at the disco"),
         }
 
-        let curr_stage = shadow_grid[curr.j][curr.i]; 
-        if curr_stage == Tile::Wall || curr_stage == Tile::Right {
-            continue;
+        // Left
+        if self.x > 0 && self.y != 0 && self.y != cols - 1 {
+            if !seen.contains(&Coord { x: self.x - 1, y: self.y }) && (map[self.y][self.x - 1] == Tile::Empty || map[self.y][self.x - 1] == Tile::Left) {
+                res.push(Coord { x: self.x - 1, y: self.y });
+            }
         }
-        // How to do this in Rust?
-        let next_stage = curr_stage + 1;
-        match next_stage {
-
+        if self.x < cols - 1 {
+            if !seen.contains(&Coord { x: self.x + 1, y: self.y }) && (map[self.y][self.x + 1] == Tile::Empty || map[self.y][self.x + 1] == Tile::Right) {
+                res.push(Coord { x: self.x + 1, y: self.y });
+            }
+        }
+        // Up
+        if self.y > 0 && self.x != 0 && self.x != rows - 1 {
+            if !seen.contains(&Coord { x: self.x, y: self.y - 1 }) && (map[self.y - 1][self.x] == Tile::Empty || map[self.y - 1][self.x] == Tile::Up) {
+                res.push(Coord { x: self.x, y: self.y - 1 });
+            }
+        }
+        if self.y < rows - 1 {
+            if !seen.contains(&Coord { x: self.x, y: self.y + 1 }) && (map[self.y + 1][self.x] == Tile::Empty || map[self.y + 1][self.x] == Tile::Down) {
+                res.push(Coord { x: self.x, y: self.y + 1 });
+            }
         }
 
+        res
     }
-    ans
+}
+
+fn dfs(map: &Vec<Vec<Tile>>, mut seen: HashSet<Coord>, next: &Coord, end: &Coord, width: &usize, height: &usize) -> usize {
+    seen.insert(*next);
+    if next == end {
+        return seen.len() - 1;
+    }
+
+    let mut res = vec![];
+    for nbhr in next.neighbours(map, &seen) {
+        res.push(dfs(map, seen.clone(), &nbhr, end, width, height));
+    }
+    match res.iter().max() {
+        Some(max) => *max,
+        None => 0,
+    }
 }
 
 #[aoc(day23, part1)]
 fn part1(input: &str) -> usize {
     let map = parse(input);
-    let mut start = Coord { x: 0, y: 0 };
-    for (j, elem) in map[0].iter().enumerate() {
-        if elem == '.' {
-            start = Coord { x: j as i64, y: 0 as i64 };
-            break;
-        }
-    }
-    dfs(map, start)
+    let start = Coord { x: 1, y: 0 };
+    let end = Coord { x: map[0].len() - 2, y: map.len() - 1 };
+    let seen = HashSet::new();
+
+    let width = map[0].len();
+    let height = map.len();
+    dfs(&map, seen, &start, &end, &width, &height)
+}
+
+
+fn parse2(s: &str) -> Vec<Vec<Tile>> {
+    s.lines()
+        .map(|line| {
+            line.chars()
+                .map(|c| match c {
+                    '.' => Tile::Empty,
+                    '#' => Tile::Wall,
+                    '>' => Tile::Empty,
+                    'v' => Tile::Empty,
+                    '<' => Tile::Empty,
+                    '^' => Tile::Empty,
+                    _ => panic!("at the disco"),
+                })
+                .collect()
+        })
+        .collect()
 }
 
 #[aoc(day23, part2)]
 fn part2(input: &str) -> usize {
-    // should chain
-    0
+    let map = parse2(input);
+    let start = Coord { x: 1, y: 0 };
+    let end = Coord { x: map[0].len() - 2, y: map.len() - 1 };
+    let seen = HashSet::new();
+
+    let width = map[0].len();
+    let height = map.len();
+    dfs(&map, seen, &start, &end, &width, &height)
 }

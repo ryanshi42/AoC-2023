@@ -20,16 +20,17 @@ fn h(input: &str) -> u64 {
     for (k, line) in og.iter().enumerate() {
         for (j, i) in line.iter().enumerate() {
 
-            let mut new_char = *i;
+            let mut new_char = i;
+            let _nc = new_char;
             if *i == '.' {
-                new_char = '#';
+                new_char = &'#';
             } else if *i == '#' {
-                new_char = '.';
+                new_char = &'.';
             } else {
                 panic!("jasdlkfhjadjlskf");
             }
             let mut temp = og.clone();
-            temp[k][j] = new_char;
+            temp[k][j] = *new_char;
             let p = g(temp.clone(), row) + 100 * g(transpose(temp.clone()), col);
             if p > 0 {
                 return p;
