@@ -127,6 +127,7 @@ fn parse(input: &str) -> (HashMap<&str, Vec<&str>>, HashMap<&str, Module>) {
     (destmap, modulemap)
 }
 
+// Using Euclidean algorithm, gcd(a, b) = gcd(b, a % b).
 fn gcd(mut a: u64, mut b: u64) -> u64 {
     while b != 0 {
         let tmp = a;
@@ -136,10 +137,12 @@ fn gcd(mut a: u64, mut b: u64) -> u64 {
     a
 }
 
+// Using property (lcm * gcd = a * b)
 fn lcm(a: u64, b: u64) -> u64 {
     a * b / gcd(a, b)
 }
 
+// This code was fully taken off https://nickymeuleman.netlify.app/garden/aoc2023-day20, all credit to him.
 #[aoc(day20, part1)]
 pub fn part_1(input: &str) -> u64 {
     let (destmap, mut modulemap) = parse(input);
