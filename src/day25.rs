@@ -6,6 +6,5 @@ fn part1(input: &str) -> usize {
 
 #[aoc(day25, part2)]
 fn part2(input: &str) -> usize {
-    // should chain
     0
 }
