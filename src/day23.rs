@@ -158,6 +158,10 @@ fn parse2(s: &str) -> Vec<Vec<Tile>> {
 
 // I gave up again and read a solution.
 // https://nickymeuleman.netlify.app/garden/aoc2023-day23
+
+// NB: two optimizations - first compress all the paths down to one jump (magic) and also only take the exit path.
+// BFS was somehow preferred here?
+// Longest path problem is actaully NP hard, unlike shortest path problem.
 #[aoc(day23, part2)]
 fn part2(input: &str) -> usize {
     let map = parse2(input);
